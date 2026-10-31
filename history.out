@@ -1,0 +1,87 @@
+    1  cat /etc/oc-release
+    2  cat /etc/os-release
+    3  whoami
+    4  id
+    5  sudo -l
+    6  sudo groupadd students
+    7  sudo useradd -m -u 1234 -G students user1
+    8  sudo passwd user1
+    9  sudo chage -M 90 user1
+   10  id user1
+   11  sudo chage -l user1
+   12  stat home/user1
+   13  stat /home/user1
+   14  history
+   15  stat /home/user1 > ~/stat.out
+   16  sudo find / -type f -perm -4000 2>/dev/null
+   17  sudo find / -type f -perm -4000 2>/dev/null | tee ~/suid-files.out
+   18  ps -eo pid,ruid,euid,comm
+   19  ps -eo,ruid,euid,comm | awk 'NR==1 || ($3==0 && ($2==1000 || $2==1234))'
+   20  ps -eo pid,ruid,euid,comm | awk 'NR==1 || ($3==0 && ($2==1000 || $2==1234))'
+   21  passwd
+   22  su - user1
+   23  mkdir -p ~/mephi-lab/protected.txt
+   24  printf 'MEPHI:protected test file\n' > '~/mephi-lab/protected.txt'
+   25  printf 'MEPHI:protected test file\n' > ~/mephi-lab/protected.txt
+   26  rmdir ~/mephi-lab/protected.txt
+   27  printf 'MEPHI:protected test file\n' > ~/mephi-lab/protected.txt
+   28  cat  ~/mephi-lab/protected.txt
+   29  sudo chown root:root ~/mephi-lab/protected.txt
+   30  sudo chmod 600 ~/mephi-lab/protected.txt
+   31  ls -l ~/mephi-lab/protected.txt
+   32  cat ~/mephi-lab/protected.txt
+   33  cp /usr/bin/cat ~/mephi-lab/cat-suid
+   34  ls -l ~/mephi-lab/cat-suid
+   35  sudo chown root:root ~/mephi-lab/cat-suid
+   36  sudo chmod 4755 ~/mephi-lab/cat-suid
+   37  ls -l ~/mephi-lab/cat-suid
+   38  ~/mephi-lab/cat-suid ~/mephi-lab/protected.txt
+   39  stat ~/mephi-lab/cat-suid >> ~/stat.out
+   40  ~/mephi-lab/cat-suid/ ~/mephi-lab/protected.txt > ~/suid-result.out
+   41  ~/mephi-lab/cat-suid ~/mephi-lab/protected.txt > ~/suid-result.out
+   42  cat ~/suid-result.out
+   43  touch ~/mephi-lab/cap-test.txt
+   44  ls -l ~/mephi-lab/cap-test.txt
+   45  chown user1:students ~/mephi-lab/cap-test.txt
+   46  cp /usr/bin/chown ~/mephi=lab/chown-cap
+   47  cp /usr/bin/chown ~/mephi-lab/chown-cap
+   48  ls -l ~/mephi-lab/chown-cap
+   49  sudo chown root:root ~/mephi-lab/chown-cap
+   50  sudo chmod 755 ~/mephi-lab/chown-cap
+   51  sudo setcap cap_chown=ep ~/mephi-lab/chown-cap
+   52  getcap ~/mephi-lab/chown-cap
+   53  ~/mephi-lab/chown-cap user1:students ~/mephi-lab/cap-test.txt
+   54  ls -l ~/mephi-lab/cap-test.txt
+   55  stat ~/mephi-lab/chown-cap >> ~/stat.out
+   56  getcap ~/mephi-lab/chown-cap > ~/getcap.out
+   57  cat ~/getcap.out
+   58  tail -n 15 ~/stat.out
+   59  id
+   60  command -v date
+   61  sudo visudo -f /etc/sudoers.d/user1-time
+   62  sudo visudo -c
+   63  sudo chown root:root /etc/sudoers.d/user1-time
+   64  sudo chmod 0440 /etc/sudoers.d/user1-time
+   65  ls -l /etc/sudoers.d/user1-time
+   66  sudo ls -l /etc/sudoers.d/user1-time
+   67  sudo visudo -c
+   68  sudo -l -U user1
+   69  stat /home/user1 > ~/stat.out
+   70  stat ~/mephi-lab/cat-suid >> ~/stat.out
+   71  stat ~/mephi-lab/chown-cap >> ~/stat.out
+   72  getcap ~/mephi-lab/chown-cap > ~/getcap.out
+   73  sudo -l -U user1 > ~/sudo-user1.out
+   74  sudo cat /etc/sudoers.d/user1-time > ~/sudoers-user1-time.out
+   75  getent passwd user1 > ~/passwd-user1.out
+   76  getent group students > ~/group-student.out
+   77  sudo getent shadow user1 | awk -F: 'BEGIN {OFS=":"} {$2="[REDACTED]"; print}' > ~/shadow-user1-redacted.out
+   78  history > ~/history.out
+   79  ls -lh ~/history.out ~/stat.out ~/getcap.out ~/suid-files.out ~/privileged-processes.out ~/suid-result.out ~/sudo-user1.out ~/sudoers-user1-time.out ~/passwd-user1.out ~/group-students.out ~/shadow-user1-redacted,out
+   80  cat ~/privileged-processes.out
+   81  getent group students > ~/group-students.out
+   82  sudo getent shadow user1 | awk -F: 'BEGIN {OFS=":"} {$2="REDACTED"; print}' > ~/shadow-user1-redacted.out 
+   83  ls -lh ~/group-students.out ~/shadow-user1-redacted.out
+   84  cat ~/group-students.out
+   85  cat ~/shadow-user1-redacted.out
+   86  mkdir -p ~/mephi-linux-security-2026
+   87  history > ~/history.out
